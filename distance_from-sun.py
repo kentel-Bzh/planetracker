@@ -54,10 +54,11 @@ class distance_from_sun:
     def kepler_law(self):
 
         distance_UA = float(self.a - self.e * math.cos(self.n * (self.t - self.t0)))
-        distance_km = int(distance_UA * 149597870)
+        self.distance_km = int(distance_UA * 149597870)
     
     def __repr__(self):
-        return "The {}/{}/{}, the {} will be at: {} km from the Sun.".format(day, month, year, planet, distance_km)
+        return "The {}/{}/{}, the {} will be at: {} km from the Sun.".format(day, month, year, planet, self.distance_km)
 
 earth = distance_from_sun(1, 0.01672, 0.9856, 4, day)
-print(earth.kepler_law())
+earth.kepler_law()
+print(earth)
