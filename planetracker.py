@@ -2,15 +2,12 @@ import math
 from datetime import datetime
 
 planet = str(input("planet: "))
-day = int(input("day: "))
-month = int(input("month: "))
-year = int(input("year: "))
+selected_date = str(input("date: day/month/year: "))
+datetime_date = datetime.strptime(selected_date, "%d/%m/%Y")
 
+#day number in the year
 
-#day in the year
-
-input_date = datetime(year, month, day)
-day_number = input_date.timetuple().tm_yday
+day_number = datetime_date.timetuple().tm_yday
 
 
 #orbits of the planets
@@ -31,12 +28,12 @@ class distance_from_sun:
     
     def kepler_law(self):
 
-        distance_UA = float(self.a - self.e * math.cos(self.n * (self.t - self.t0)))
+        distance_UA = float(self.a *(1 - self.e**2) / (1 + self.e * math.cos(self.n * (self.t - self.t0))))
         self.distance_km = int(distance_UA * 149597870)
     
     def __repr__(self):
-        return "The {}/{}/{}, the {} will be at: {} km from the Sun.".format(day, month, year, planet, self.distance_km)
+        return "The {}/{}/{}, the {} will be at: {} km from the Sun.".format(datetime_date.day, datetime_date.month, datetime_date.year, planet, self.distance_km)
 
-earth = distance_from_sun(1, 0.01672, 0.9856, 4, day)
+earth = distance_from_sun(1, 0.01672, 0.9856, day_number, 4)
 earth.kepler_law()
 print(earth)
