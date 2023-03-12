@@ -5,18 +5,32 @@ planet = str(input("planet: "))
 selected_date = str(input("date: day/month/year: "))
 datetime_date = datetime.strptime(selected_date, "%d/%m/%Y")
 
-#day number in the year
+#day number in the year and year date
 
 day_number = datetime_date.timetuple().tm_yday
 year_number = datetime_date.timetuple().tm_year
 
+class planet_day_calculator:
 
-#orbits of the planets
-#a = semi-major axis
-#e = excentricity
-#n = angular velocity
-#t = day
-#t0 = apsis day
+    #calculate planet date equivalent (day number in the planet year) to earth date given in input
+    #day_shift = number of days between the last perihelion and the 01/01/2023
+
+    def __init__(self, day_shift, days_in_year):
+        self.day_shift = day_shift
+        self.days_in_year = days_in_year
+
+    def day_calculator(self):
+        
+        #years after the last (before 2023) perihelion of the planet
+        years_after_last_perihelion = year_number - 2023
+
+        #total days since the last perihelion
+        self.days_after_last_perihelion = day_number + self.day_shift + (365 * years_after_last_perihelion)
+
+        #day nr in planet year
+        self.planet_day_nr = self.days_after_last_perihelion % self.days_in_year
+
+            
 
 class distance_from_sun:
 
@@ -35,41 +49,28 @@ class distance_from_sun:
     def __repr__(self):
         return "The {}/{}/{}, {} will be at: {} km from the Sun.".format(datetime_date.day, datetime_date.month, datetime_date.year, planet, self.distance_km)
 
-#calendars
+#objects
 
-def martian_day_calculator(earth_date):
-
-    #day number in the year
-    earth_day = day_number
-
-    #periapsis on 21/06/2022, i.e. 224 days before the beginning of 2023
-    #martian year = 686,9 days; see README for further data
-    #mars_year = equivalent Earth's years calculated from the 21/06/2022
-
-    mars_year = year_number - 2023
-
-    #number of Mars days after 21/06/2022 periapsis
-
-    absolute_mars_day = earth_day + 224 + (365 * mars_year)
-
-    #number of days in the martian year after periapsis
-
-    mars_day_nr = absolute_mars_day % 687
-
-    return mars_day_nr
-
-mars_day = martian_day_calculator(selected_date)
+venus_day = planet_day_calculator(118, 225)
+venus_day.day_calculator()
+venus_day_nr = venus_day.planet_day_nr
+mars_day = planet_day_calculator(224, 687)
+mars_day.day_calculator()
+mars_day_nr = mars_day.planet_day_nr
 
 
-#planet objects
-
+venus = distance_from_sun(0.71843, 0.00678, 1.6251, venus_day_nr, 0)
+venus.kepler_law()
 earth = distance_from_sun(1, 0.01672, 0.9856, day_number, 4)
-mars = distance_from_sun(1.52371, 0.09339, 0.5313, mars_day, 0)
+earth.kepler_law()
+mars = distance_from_sun(1.52371, 0.09339, 0.5313, mars_day_nr, 0)
+mars.kepler_law()
 
+#forks
+
+if planet == str("venus"):
+    print(venus)
 if planet == str("earth"):
-    earth.kepler_law()
     print(earth)
-
 if planet == str("mars"):
-    mars.kepler_law()
     print(mars)
