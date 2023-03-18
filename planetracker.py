@@ -1,38 +1,21 @@
 import math
 from datetime import datetime
 
+from opposition_calculator import Oppositions
+from common_variables import datetime_date, day_number
+from planet_day_converter import planet_day_calculator
+
+
 planet = str(input("planet: "))
-selected_date = str(input("date: day/month/year: "))
-datetime_date = datetime.strptime(selected_date, "%d/%m/%Y")
-
-#day number in the year and year date
-
-day_number = datetime_date.timetuple().tm_yday
-year_number = datetime_date.timetuple().tm_year
-
-class planet_day_calculator:
-
-    #calculate planet date equivalent (day number in the planet year) to earth date given in input
-    #day_shift = number of days between the last perihelion and the 01/01/2023
-
-    def __init__(self, day_shift, days_in_year):
-        self.day_shift = day_shift
-        self.days_in_year = days_in_year
-
-    def day_calculator(self):
-        
-        #years after the last (before 2023) perihelion of the planet
-        years_after_last_perihelion = year_number - 2023
-
-        #total days since the last perihelion
-        self.days_after_last_perihelion = day_number + self.day_shift + (365 * years_after_last_perihelion)
-
-        #day nr in planet year
-        self.planet_day_nr = self.days_after_last_perihelion % self.days_in_year
-
-            
 
 class distance_from_sun:
+
+    #orbits of the planets
+    #a = semi-major axis
+    #e = excentricity
+    #n = angular velocity
+    #t = day
+    #t0 = apsis day
 
     def __init__(self,a,e,n,t,t0):
         self.a = a
@@ -47,7 +30,8 @@ class distance_from_sun:
         self.distance_km = int(distance_UA * 149597870)
     
     def __repr__(self):
-        return "The {}/{}/{}, {} will be at: {} km from the Sun.".format(datetime_date.day, datetime_date.month, datetime_date.year, planet, self.distance_km)
+        return "The {}/{}/{}, {} will be at: {} km from the Sun.".format(datetime_date.day, datetime_date.month, datetime_date.year, planet, f"{self.distance_km:,}")
+
 
 #objects
 
@@ -66,6 +50,9 @@ earth.kepler_law()
 mars = distance_from_sun(1.52371, 0.09339, 0.5313, mars_day_nr, 0)
 mars.kepler_law()
 
+mars_synodic_period = Oppositions(datetime(2022,12,7), 780)
+mars_synodic_period.oppositions()
+
 #forks
 
 if planet == str("venus"):
@@ -74,3 +61,4 @@ if planet == str("earth"):
     print(earth)
 if planet == str("mars"):
     print(mars)
+    print(mars_synodic_period)

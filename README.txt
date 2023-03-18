@@ -7,6 +7,8 @@ Planetracker is meant to help amateur astronomers in the observation of the plan
 
 Sun/Earth
 ----------------
+[distance_from_sun]
+
 Kepler's Law:  r = a ((1 - e2)/(1 + e cos θ))
 
 for:
@@ -20,28 +22,26 @@ with M = mean anomaly instead of true anomaly
 M = n (t - t0), where:
 n = mean motion °/day (mean angular velocity = 360°/total year's days)
 t = selected day
-t0 = date of perihelion
+t0 = date of perihelion 
 
 hence the formula:
 
 r = a ((1 - e2)/(1 + e cos M))
 r = a ((1 - e2)/(1 + e cos n (t - t0)))
 
+-- date (t) conversion for the other planets: 
+[planet_day_calculator]
 
-Sun/Mars
----------------
-t0 = date of perihelion, i.e: 
-- 21/06/2022 + 687d/martian year:
-- 08/05/2024
-- 26/03/2026
-- 11/02/2028
-- 29/12/2029
-- 16/11/2031
-- 03/10/2033
+The date given in input by the user is an Earth date dd/mm/yyyy which has to be converted into the day number within the selected planet year. F. ex. Mars' year has 686,9 days, starting at the date of the perihelion. 
+
+We take the date of the last perihelion (from when I'm writing here, ie march 2023); Mars was last at perihelion on 21/06/2022 and we calculate the remaining days until the 01/01/2023 = 224 [day_shift] + we add the number of Earth years since that date [years_after_last_perihelion] + the remaining number of days [day_number]. The result is the total number of days since the perihelion in 2022. We can then use the modulus function % to compute the remaining days after the last complete martian year [planet_day_nr]
 
 
-Mode of calculation: Earth/planet:
-----------------------------------
+
+
+Mode of calculation: Earth/outer planet:
+-------------------------------------------------------------
+I used there a bit of trigonometry and a bit of Pythagoras (see the detailed sketches on the repository).
 
 ∆Ep = √((∆E sin α)^2 + (∆p - ∆E cos α)^2)
 
@@ -63,7 +63,7 @@ wp = angle between the actual position of the selected planet and its last oppos
 hence the first developped formula:
 
 ∆Tp = √((∆T sint(wE - wp))^2 + (∆p - ∆T cos t(wE - wp))^2)
-
+  
 where
 wE = tnE
 wp = tnp
@@ -85,5 +85,5 @@ to = date of the last opposition
 
 
 
-NB: this is my own formula; please submit objections if any.
+please submit objections if any.
 
