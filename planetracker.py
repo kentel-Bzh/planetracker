@@ -53,6 +53,41 @@ mars.kepler_law()
 mars_synodic_period = Oppositions(datetime(2022,12,7), 780)
 mars_synodic_period.oppositions()
 
+#planet_distance_from_sun:
+
+sun_mars = mars.distance_km
+sun_earth = earth.distance_km
+
+class Distance_from_Earth:
+
+    def __init__(self,planet, sun_earth, sun_planet, planet_day, planet_ang_velocity):
+
+        self.planet = planet
+        self.sun_earth = sun_earth
+        self.sun_planet = sun_planet
+        self.planet_day = planet_day
+        self.planet_ang_velocity = planet_ang_velocity
+
+    def earth_distance(self):
+
+        earth_ang_velocity = 0.9856
+        #angles beta (Earth), delta (planet), alpha (Earth-planet), see drawing
+        beta = earth_ang_velocity * self.planet_day
+        delta = self.planet_ang_velocity * self.planet_day
+        alpha = beta - delta
+        
+
+        self.earth_planet = int(math.sqrt(math.pow(self.sun_earth * math.sin(alpha),2) + math.pow(self.sun_planet - (self.sun_earth * math.cos(alpha)),2)))
+
+    def __repr__(self):
+
+        return "this is day nr {} on {}. It is {} km away from Earth today".format(self.planet_day, self.planet, f"{self.earth_planet:,}")
+
+#objects:
+
+mars_distance = Distance_from_Earth(str("Mars"), sun_earth, sun_mars, mars_day_nr, 0.5313)
+mars_distance.earth_distance()
+
 #forks
 
 if planet == str("venus"):
@@ -62,3 +97,4 @@ if planet == str("earth"):
 if planet == str("mars"):
     print(mars)
     print(mars_synodic_period)
+    print(mars_distance)
