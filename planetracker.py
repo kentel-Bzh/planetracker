@@ -2,7 +2,7 @@ import math
 from datetime import datetime
 
 from opposition_calculator import Oppositions
-from common_variables import datetime_date, day_number
+import common_variables
 from planet_day_converter import planet_day_calculator
 
 
@@ -47,7 +47,7 @@ venus = distance_from_sun(0.71843, 0.00678, 1.6251, venus_day_nr, 0)
 venus.kepler_law()
 earth = distance_from_sun(1, 0.01672, 0.9856, day_number, 4)
 earth.kepler_law()
-mars = distance_from_sun(1.52371, 0.09339, 0.5313, mars_day_nr, 0)
+mars = distance_from_sun(1.52371, 0.09339, 0.5240, mars_day_nr, 0)
 mars.kepler_law()
 
 mars_synodic_period = Oppositions(datetime(2022,12,7), 780)

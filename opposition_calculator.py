@@ -39,7 +39,7 @@ class Oppositions:
 
             if next_opposition_year == int(self.next_opposition.year) and next_opposition_month == input_month_date and next_opposition_day < input_day_date:
 
-                #avoids returning a date earlier the month
+                #avoids returning a date earlier in the month
                 self.next_opposition = self.next_opposition + timedelta(days=780)
                 next_opposition_year = int(self.next_opposition.year)
                 next_opposition_month = int(self.next_opposition.month)
